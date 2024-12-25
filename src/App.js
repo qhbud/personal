@@ -1,86 +1,86 @@
-import React from "react";
-import { useSpring, animated } from '@react-spring/web'
+import React, { useState, useEffect } from "react"; // Add useEffect here
+import { useSpring, animated } from '@react-spring/web';
+import ParticlesBackground from './ParticlesBackground';
 import "./App.css";
 
 const App = () => {
   const fadeIn = useSpring({ opacity: 1, from: { opacity: 0 }, delay: 200 });
+  const [clicked, setClicked] = useState(false);
 
+  const [showButton, setShowButton] = useState(false);  // State to control button visibility
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowButton(true);  // Show the button after 3 seconds
+    }, 1500); // 3000ms = 3 seconds
+
+    return () => clearTimeout(timer);  // Cleanup timeout if component unmounts
+  }, []);  // Empty dependency array means this effect runs once on mount
+
+
+  const buttonSpring = useSpring({
+    width: clicked ? "200px" : "150px",  // Button size reduces to box size
+    height: clicked ? "50px" : "40px",   // Height shrinks
+    opacity: showButton  ? 1 : 0,            // Fade out button
+    transform: clicked ? "scale(0)" : "scale(1)", // Shrink the button
+    borderRadius: clicked ? "5px" : "5px", // Round corners for box
+    backgroundColor: clicked ? "#4A90E2" : "#F9F9FF", // Color change
+    config: { tension: 120, friction: 20 },
+  });
+
+  const boxSpring = useSpring({
+    opacity: clicked ? 1 : 0, // Fade in box when clicked
+    transform: clicked ? "scale(1)" : "scale(0)", // Scale the box
+  });
+
+ /* test version control*/
   return (
-    <div className="app">
-      <header className="header">
-        <h1>Quinn Budnick</h1>
-        <p>Third Year Studying Computer Science</p>
-        <p>
-          <a href="mailto:quinnbudnick@gmail.com">quinnbudnick@gmail.com</a>
-        </p>
-        <p>(401) 787-2195</p>
-        <p>Worcester, MA</p>
-        <a href="https://www.linkedin.com">LinkedIn</a>
-      </header>
-      <animated.div style={fadeIn} className="content">
-        <section>
-          <h2>Education</h2>
-          <ul>
-            <li>
-              <strong>Bachelor of Science</strong>, Major in Computer Science, Minor in Data Science
-              <br />
-              Worcester Polytechnic Institute (2022 - 2026)
-            </li>
-            <li>
-              <strong>High School Diploma</strong>, Highest Honors
-              <br />
-              The Greene School (2018 - 2022)
-            </li>
-          </ul>
-        </section>
-        <section>
-          <h2>Skills</h2>
-          <ul>
-            <li>Object-Oriented: Java, C#, C++, Python</li>
-            <li>Front-end: React, JS, HTML, CSS</li>
-            <li>Databases: MySQL, MongoDB</li>
-            <li>Data Visualization: R, Tableau, Excel</li>
-            <li>Communication: Research, Writing</li>
-            <li>Creative: Premiere, Photoshop</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Work Experience</h2>
-          <ul>
-            <li>
-              <strong>Independent Video Producer</strong>, YouTube (May 2023 - Current)
-              <br />
-              Developed content across successful channels, with over 5M views.
-            </li>
-            <li>
-              <strong>Summer Intern</strong>, Johnson and Wales University (June 2021 - July 2021)
-              <br />
-              Contributed to a team developing a marketing plan.
-            </li>
-            <li>
-              <strong>Trail & Campus Landscaper</strong>, The Greene School (July 2018 - August 2019)
-              <br />
-              Maintained campus and restored hiking trails.
-            </li>
-          </ul>
-        </section>
-        <section>
-          <h2>Ongoing Projects</h2>
-          <ul>
-            <li>
-              <strong>Interactive Qualifying Project</strong>
-              <br />
-              Modeling User Quality of Experience for Cloud Streaming Systems.
-            </li>
-            <li>
-              <strong>Spy Lens Extension</strong>
-              <br />
-              Developing a productivity tool using Google's Gemini API.
-            </li>
-          </ul>
-        </section>
+  <>
+      <ParticlesBackground />
+      <animated.div className="app" style={fadeIn}>
+        <animated.header className="header" style={fadeIn}>
+          <h1>Hi, I'm Quinn</h1>
+
+          <p>
+            I'm a Junior studying Computer Science at Worcester Polytechnic Institute. 
+            I am very into Emergent Behavior, Public Policy, and the Boston Celtics.
+          </p>
+          
+          <p>
+            <a href="mailto:quinnbudnick@gmail.com">quinnbudnick@gmail.com</a>
+            <span> | </span>
+            <a 
+              href="https://www.linkedin.com/in/quinn-budnick-3043b513/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+            <span> | </span>
+            <span>(401) 787-2195 | Worcester, MA</span>
+          </p>
+        </animated.header>
+         {showButton && (
+          <animated.button
+          className="transform-btn"
+          style={buttonSpring}
+          onClick={() => setClicked(!clicked)}
+        >
+          {clicked ? null : "See More"}
+        </animated.button>
+        )}
+
+        <animated.div style={boxSpring} className="box">
+          {clicked && <a href="https://linktr.ee/qhbud">My Work</a>}
+
+        </animated.div>
+
       </animated.div>
-    </div>
+
+
+
+
+  </>
   );
 };
 

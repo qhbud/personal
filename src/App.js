@@ -33,7 +33,7 @@ const App = () => {
     transform: clicked ? "scale(1)" : "scale(0)", // Scale the box
   });
 
-
+ /* test version control*/
   return (
   <>
       <ParticlesBackground />
@@ -45,7 +45,7 @@ const App = () => {
             I'm a Junior studying Computer Science at Worcester Polytechnic Institute. 
             I am very into Emergent Behavior, Public Policy, and the Boston Celtics.
           </p>
-
+          
           <p>
             <a href="mailto:quinnbudnick@gmail.com">quinnbudnick@gmail.com</a>
             <span> | </span>
